@@ -49,7 +49,7 @@ const CreateProject: NextPage = () => {
     },
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     const projectData = {
@@ -125,7 +125,11 @@ const CreateProject: NextPage = () => {
           {/* Is Project Open */}
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">Is it a Global Fund Project?</label>
-            <select value={isProjectOpen} onChange={(e) => setIsProjectOpen(e.target.value === 'true')} className="block w-full mt-1">
+            <select
+              value={isProjectOpen}
+              onChange={e => setIsProjectOpen(e.target.value === "true")}
+              className="block w-full mt-1"
+            >
               <option value="true">Yes</option>
               <option value="false">No</option>
             </select>
