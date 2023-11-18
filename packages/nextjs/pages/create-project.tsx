@@ -1,8 +1,7 @@
-import { useState } from 'react';
-import type { NextPage } from 'next';
-import { MetaHeader } from '~~/components/MetaHeader';
-import { useScaffoldContractWrite } from '~~/hooks/scaffold-eth';
-
+import { useState } from "react";
+import type { NextPage } from "next";
+import { MetaHeader } from "~~/components/MetaHeader";
+import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 
 const CreateProject: NextPage = () => {
   // State for each field in the struct
@@ -11,8 +10,7 @@ const CreateProject: NextPage = () => {
   const [regionalCode, setRegionalCode] = useState(0);
   const [category, setCategory] = useState(0);
   const [isProjectOpen, setIsProjectOpen] = useState(true);
-  const [metadataProject, setMetadataProject] = useState('');
-
+  const [metadataProject, setMetadataProject] = useState("");
 
   const climateChangeCategories = [
     "General Fund Green Energy",
@@ -25,7 +23,7 @@ const CreateProject: NextPage = () => {
     "Carbon Capture and Storage Technologies",
     "Environmental Education and Awareness",
     "Climate Resilience and Adaptation Projects",
-    "Pollution Reduction and Waste Management"
+    "Pollution Reduction and Waste Management",
   ];
 
   // Setup contract write hook
@@ -40,7 +38,7 @@ const CreateProject: NextPage = () => {
       BigInt(0),
       BigInt(0),
       BigInt(0),
-      "hello"
+      "hello",
     ],
     value: 0n,
     blockConfirmations: 1,
@@ -58,7 +56,7 @@ const CreateProject: NextPage = () => {
       regionalCode,
       category,
       isProjectOpen,
-      metadataProject
+      metadataProject,
     };
 
     console.log("Project Data:", projectData);
@@ -72,8 +70,8 @@ const CreateProject: NextPage = () => {
           BigInt(regionalCode),
           BigInt(category),
           BigInt(isProjectOpen),
-          metadataProject
-        ]
+          metadataProject,
+        ],
       });
       console.log("Transaction Response:", txnResponse);
     } catch (error) {
@@ -90,38 +88,58 @@ const CreateProject: NextPage = () => {
           {/* CO2 Offset Planned */}
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">CO2 Offset Planned in Metric Tons</label>
-            <input type="number" value={co2OffsetPlanned} onChange={(e) => setCo2OffsetPlanned(parseInt(e.target.value))} className="input w-full mt-1" />
+            <input
+              type="number"
+              value={co2OffsetPlanned}
+              onChange={e => setCo2OffsetPlanned(parseInt(e.target.value))}
+              className="input w-full mt-1"
+            />
           </div>
 
           {/* Token Amount Required */}
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">Cost per Metric Ton</label>
-            <input type="number" value={tokenAmountRequired} onChange={(e) => setTokenAmountRequired(parseInt(e.target.value))} className="input w-full mt-1" />
+            <input
+              type="number"
+              value={tokenAmountRequired}
+              onChange={e => setTokenAmountRequired(parseInt(e.target.value))}
+              className="input w-full mt-1"
+            />
           </div>
 
           {/* Regional Code */}
           <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Region</label>
-        <select value={regionalCode} onChange={(e) => setRegionalCode(parseInt(e.target.value))} className="block w-full mt-1">
-          <option value="Global">Global</option>
-          <option value="Africa">Africa</option>
-          <option value="Asia">Asia</option>
-          <option value="Europe">Europe</option>
-          <option value="North America">North America</option>
-          <option value="South America">South America</option>
-          <option value="Australia">Australia</option>
-        </select>
-      </div>
+            <label className="block text-sm font-medium text-gray-700">Region</label>
+            <select
+              value={regionalCode}
+              onChange={e => setRegionalCode(parseInt(e.target.value))}
+              className="block w-full mt-1"
+            >
+              <option value="Global">Global</option>
+              <option value="Africa">Africa</option>
+              <option value="Asia">Asia</option>
+              <option value="Europe">Europe</option>
+              <option value="North America">North America</option>
+              <option value="South America">South America</option>
+              <option value="Australia">Australia</option>
+            </select>
+          </div>
           {/* Category */}
-         
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Category</label>
-        <select value={category} onChange={(e) => setCategory(parseInt(e.target.value))} className="block w-full mt-1">
-          {climateChangeCategories.map((cat, index) => (
-            <option key={index} value={index}>{cat}</option>
-          ))}
-        </select>
-      </div>
+
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">Category</label>
+            <select
+              value={category}
+              onChange={e => setCategory(parseInt(e.target.value))}
+              className="block w-full mt-1"
+            >
+              {climateChangeCategories.map((cat, index) => (
+                <option key={index} value={index}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
           {/* Is Project Open */}
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">Is it a Global Fund Project?</label>
@@ -135,30 +153,36 @@ const CreateProject: NextPage = () => {
             </select>
           </div>
 
-                    {/* Is Project Open */}
-                    <div className="mb-4">
+          {/* Is Project Open */}
+          <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">Have you been verified already?</label>
-            <select value={isProjectOpen} onChange={(e) => setIsProjectOpen(e.target.value === 'true')} className="block w-full mt-1">
+            <select
+              value={isProjectOpen}
+              onChange={e => setIsProjectOpen(e.target.value === "true")}
+              className="block w-full mt-1"
+            >
               <option value="true">Yes</option>
               <option value="false">No</option>
             </select>
           </div>
 
-   
-
           {/* Metadata Project */}
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">Description of your Project</label>
-            <input type="text" value={metadataProject} onChange={(e) => setMetadataProject(e.target.value)} className="input w-full mt-1" />
+            <input
+              type="text"
+              value={metadataProject}
+              onChange={e => setMetadataProject(e.target.value)}
+              className="input w-full mt-1"
+            />
           </div>
-
 
           {/* Submit Button */}
           <div className="flex justify-center">
-            <button type="submit" className="btn btn-primary">Create Project</button>
+            <button type="submit" className="btn btn-primary">
+              Create Project
+            </button>
           </div>
-
-
         </form>
       </div>
     </>
