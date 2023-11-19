@@ -25,7 +25,7 @@ const Home: NextPage = () => {
           <div className="w-full mt-20 px-8 py-12 z-10">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {/* Feature box for Climate Actions */}
-              <Link href="/actions">
+              <Link href="/contribute">
                 <div className="mt-20"></div>
                 <div className="feature-box">
                   <GlobeAltIcon className="h-8 w-8 text-white" />
@@ -36,7 +36,7 @@ const Home: NextPage = () => {
               </Link>
 
               {/* Feature box for Project Portfolio */}
-              <Link href="/projects">
+              <Link href="/project-overview">
                 <div className="mt-20"></div>
                 <div className="flex flex-col bg-green-700/90 backdrop-blur-lg px-10 py-10 text-center items-center rounded-3xl shadow-lg cursor-pointer h-64 justify-between">
                   <DocumentMagnifyingGlassIcon className="h-8 w-8 text-white" />
@@ -45,7 +45,7 @@ const Home: NextPage = () => {
               </Link>
 
               {/* Feature box for Start Project */}
-              <Link href="/start-project">
+              <Link href="/create-project">
                 <div className="mt-20"></div>
                 <div className="flex flex-col bg-orange-700/90 backdrop-blur-lg px-10 py-10 text-center items-center rounded-3xl shadow-lg cursor-pointer h-64 justify-between">
                   <LightBulbIcon className="h-8 w-8 text-white" />
