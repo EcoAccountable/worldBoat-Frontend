@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import type { NextPage } from 'next';
-import { MetaHeader } from '~~/components/MetaHeader';
-import { useScaffoldContractRead } from '~~/hooks/scaffold-eth';
-import { useWalletClient } from 'wagmi';
+import { useEffect, useState } from "react";
+import type { NextPage } from "next";
+import { useWalletClient } from "wagmi";
+import { MetaHeader } from "~~/components/MetaHeader";
+import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
 
 interface Token {
   owner: string;
@@ -18,7 +18,6 @@ interface Token {
   tokenId: number;
 }
 
-
 const climateChangeCategories = [
   "General Fund Green Energy",
   "Renewable Energy Projects",
@@ -30,7 +29,7 @@ const climateChangeCategories = [
   "Carbon Capture and Storage Technologies",
   "Environmental Education and Awareness",
   "Climate Resilience and Adaptation Projects",
-  "Pollution Reduction and Waste Management"
+  "Pollution Reduction and Waste Management",
 ];
 
 const ERC721TokensOverview: NextPage = () => {
@@ -38,7 +37,7 @@ const ERC721TokensOverview: NextPage = () => {
   const [expandedTokenId, setExpandedTokenId] = useState<number | null>(null);
   const { data: walletClient } = useWalletClient();
 
-  console.log(walletClient)
+  console.log(walletClient);
   const { data: stat } = useScaffoldContractRead({
     contractName: "WorldBoatClimateActions",
     functionName: "getTokenStats",
@@ -62,7 +61,7 @@ const ERC721TokensOverview: NextPage = () => {
         category: climateChangeCategories[Number(stat.category)] || "Unknown Category",
         openFundingOrClosed: stat.openFundingOrClosed,
         metadataProject: stat.metadataProject,
-        tokenId: 1 // Assuming tokenId is 1 for this example
+        tokenId: 1, // Assuming tokenId is 1 for this example
       };
       setTokens([tokenData]);
     }
@@ -78,25 +77,50 @@ const ERC721TokensOverview: NextPage = () => {
       <div className="container mx-auto p-6">
         <h1 className="text-3xl text-center mb-6">Your ERC721 Tokens</h1>
         <div className="flex overflow-x-auto gap-4">
-        {tokens.map((token) => (
-  <div key={token.tokenId.toString()} className="card bg-white shadow-lg rounded-lg p-4" onClick={() => toggleCard(token.tokenId)}>
-    <h2 className="text-xl font-semibold mb-2">Your Contributed Project: #{token.tokenId.toString()}</h2>
-    {expandedTokenId === token.tokenId && (
-      <div className="text-left">
-        <p><strong>Owner:</strong> {token.owner}</p>
-        <p><strong>CO2 Offset Planned:</strong> {token.co2OffsetPlanned.toString()}</p>
-        <p><strong>Token Amount Paid:</strong> {token.tokenAmountPaid.toString()}</p>
-        <p><strong>CO2 Actually Offset:</strong> {token.co2ActuallyOffset.toString()}</p>
-        <p><strong>Funding Date:</strong> {new Date(Number(token.fundingDateTimestamp * BigInt(1000))).toLocaleDateString()}</p>
-        <p><strong>Project ID:</strong> {token.projectId.toString()}</p>
-        <p><strong>Regional Code:</strong> {token.regionalCode.toString()}</p>
-        <p><strong>Category:</strong> {token.category.toString()}</p>
-        <p><strong>Project Status:</strong> {token.openFundingOrClosed ? 'Open' : 'Closed'}</p>
-        <p><strong>Project Description:</strong> {token.metadataProject}</p>
-      </div>
-    )}
-  </div>
-))}
+          {tokens.map(token => (
+            <div
+              key={token.tokenId.toString()}
+              className="card bg-white shadow-lg rounded-lg p-4"
+              onClick={() => toggleCard(token.tokenId)}
+            >
+              <h2 className="text-xl font-semibold mb-2">Your Contributed Project: #{token.tokenId.toString()}</h2>
+              {expandedTokenId === token.tokenId && (
+                <div className="text-left">
+                  <p>
+                    <strong>Owner:</strong> {token.owner}
+                  </p>
+                  <p>
+                    <strong>CO2 Offset Planned:</strong> {token.co2OffsetPlanned.toString()}
+                  </p>
+                  <p>
+                    <strong>Token Amount Paid:</strong> {token.tokenAmountPaid.toString()}
+                  </p>
+                  <p>
+                    <strong>CO2 Actually Offset:</strong> {token.co2ActuallyOffset.toString()}
+                  </p>
+                  <p>
+                    <strong>Funding Date:</strong>{" "}
+                    {new Date(Number(token.fundingDateTimestamp * BigInt(1000))).toLocaleDateString()}
+                  </p>
+                  <p>
+                    <strong>Project ID:</strong> {token.projectId.toString()}
+                  </p>
+                  <p>
+                    <strong>Regional Code:</strong> {token.regionalCode.toString()}
+                  </p>
+                  <p>
+                    <strong>Category:</strong> {token.category.toString()}
+                  </p>
+                  <p>
+                    <strong>Project Status:</strong> {token.openFundingOrClosed ? "Open" : "Closed"}
+                  </p>
+                  <p>
+                    <strong>Project Description:</strong> {token.metadataProject}
+                  </p>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </>
