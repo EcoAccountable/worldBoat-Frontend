@@ -5,7 +5,9 @@ import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 
 const CreateProject: NextPage = () => {
   // State for each field in the struct
+
   const [co2OffsetPlanned, setCo2OffsetPlanned] = useState(0);
+  let currentProjectId = 2;
   const [tokenAmountRequired, setTokenAmountRequired] = useState(0);
   const [regionalCode, setRegionalCode] = useState(0);
   const [category, setCategory] = useState(0);
@@ -67,12 +69,14 @@ const CreateProject: NextPage = () => {
           // Assuming your contract expects the project data in this format
           BigInt(co2OffsetPlanned),
           BigInt(tokenAmountRequired),
-          BigInt(regionalCode),
+          BigInt( currentProjectId + 1),
           BigInt(category),
           BigInt(isProjectOpen),
           metadataProject,
         ],
       });
+
+      currentProjectId++;
       console.log("Transaction Response:", txnResponse);
     } catch (error) {
       console.error("Transaction Error:", error);

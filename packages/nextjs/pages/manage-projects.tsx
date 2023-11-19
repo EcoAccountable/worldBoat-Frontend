@@ -83,7 +83,7 @@ const ERC721TokensOverview: NextPage = () => {
               className="card bg-white shadow-lg rounded-lg p-4"
               onClick={() => toggleCard(token.tokenId)}
             >
-              <h2 className="text-xl font-semibold mb-2">Your Contributed Project: #{token.tokenId.toString()}</h2>
+              <h2 className="text-xl font-semibold mb-2">Your Contributions: #{token.tokenId.toString()}</h2>
               {expandedTokenId === token.tokenId && (
                 <div className="text-left">
                   <p>
