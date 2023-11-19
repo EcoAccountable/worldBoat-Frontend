@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import type { NextPage } from "next";
-import { useWalletClient } from "wagmi";
 import { MetaHeader } from "~~/components/MetaHeader";
 import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
 
@@ -35,37 +34,40 @@ const climateChangeCategories = [
 const ERC721TokensOverview: NextPage = () => {
   const [tokens, setTokens] = useState<Token[]>([]);
   const [expandedTokenId, setExpandedTokenId] = useState<number | null>(null);
-  const { data: walletClient } = useWalletClient();
 
-  console.log(walletClient);
-  const { data: stat } = useScaffoldContractRead({
-    contractName: "WorldBoatClimateActions",
-    functionName: "getTokenStats",
-    args: [1n],
-  });
-
-  console.log(stat);
+  const readContracts = Array.from({ length: 3 }, (_, i) =>
+    useScaffoldContractRead({
+      contractName: "WorldBoatClimateActions",
+      functionName: "getTokenStats",
+      args: [BigInt(i + 1)],
+    }),
+  );
 
   useEffect(() => {
-    // Assuming stat is updated with the contract read
-    if (stat) {
-      // Transform the stat object to the Token interface
-      const tokenData: Token = {
-        owner: stat.owner,
-        co2OffsetPlanned: stat.co2OffsetPlanned,
-        tokenAmountPaid: stat.tokenAmountPaid,
-        co2ActuallyOffset: stat.co2ActuallyOffset,
-        fundingDateTimestamp: stat.fundingDateTimestamp,
-        projectId: stat.projectId,
-        regionalCode: stat.regionalCode,
-        category: climateChangeCategories[Number(stat.category)] || "Unknown Category",
-        openFundingOrClosed: stat.openFundingOrClosed,
-        metadataProject: stat.metadataProject,
-        tokenId: 1, // Assuming tokenId is 1 for this example
-      };
-      setTokens([tokenData]);
-    }
-  }, [stat]);
+    const newTokens = readContracts
+      .map((contract, index) => {
+        const data = contract.data;
+        if (data) {
+          return {
+            owner: data.owner,
+            co2OffsetPlanned: data.co2OffsetPlanned,
+            tokenAmountPaid: data.tokenAmountPaid,
+            co2ActuallyOffset: data.co2ActuallyOffset,
+            fundingDateTimestamp: data.fundingDateTimestamp,
+            projectId: data.projectId,
+            regionalCode: data.regionalCode,
+            category: climateChangeCategories[Number(data.category)] || "Unknown Category",
+            openFundingOrClosed: data.openFundingOrClosed,
+            metadataProject: data.metadataProject,
+            tokenId: index + 1,
+          };
+        }
+        return null;
+      })
+      .filter(Boolean);
+
+    setTokens(newTokens);
+  }, [readContracts]);
 
   const toggleCard = (tokenId: number) => {
     setExpandedTokenId(expandedTokenId === tokenId ? null : tokenId);
@@ -79,13 +81,13 @@ const ERC721TokensOverview: NextPage = () => {
         <div className="flex overflow-x-auto gap-4">
           {tokens.map(token => (
             <div
-              key={token.tokenId.toString()}
-              className="card bg-white shadow-lg rounded-lg p-4"
+              key={token.tokenId}
               onClick={() => toggleCard(token.tokenId)}
+              className={`card ${expandedTokenId === token.tokenId ? "expanded" : ""}`}
             >
-              <h2 className="text-xl font-semibold mb-2">Your Contributions: #{token.tokenId.toString()}</h2>
+              <h2>Token #{token.tokenId}</h2>
               {expandedTokenId === token.tokenId && (
-                <div className="text-left">
+                <div className="text-left p-4">
                   <p>
                     <strong>Owner:</strong> {token.owner}
                   </p>
@@ -100,7 +102,7 @@ const ERC721TokensOverview: NextPage = () => {
                   </p>
                   <p>
                     <strong>Funding Date:</strong>{" "}
-                    {new Date(Number(token.fundingDateTimestamp * BigInt(1000))).toLocaleDateString()}
+                    {new Date(Number(token.fundingDateTimestamp) * 1000).toLocaleDateString()}
                   </p>
                   <p>
                     <strong>Project ID:</strong> {token.projectId.toString()}
@@ -109,7 +111,7 @@ const ERC721TokensOverview: NextPage = () => {
                     <strong>Regional Code:</strong> {token.regionalCode.toString()}
                   </p>
                   <p>
-                    <strong>Category:</strong> {token.category.toString()}
+                    <strong>Category:</strong> {token.category}
                   </p>
                   <p>
                     <strong>Project Status:</strong> {token.openFundingOrClosed ? "Open" : "Closed"}
